@@ -1,0 +1,131 @@
+Lazy-loading feature modules
+
+const routes: Routes = [
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+  },
+];
+
+ imports: [RouterModule.forRoot(routes)],
+ ,
+ 
+ import { RouterModule } from '@angular/router';
+ 
+ const routes = [
+  {
+      path: '',
+      component: TopComponent
+  }
+]
+
+RouterModule.forChild(routes)
+
+,
+<router-outlet></router-outlet>
+
+form :
+import module
+ FormsModule,
+ ReactiveFormsModule 
+=> father ->
+ 
+ html 
+ <div [formGroup]="formRegister">
+  <input type="text" formControlName="name" />
+  <input type="text" formControlName="email" />
+  <input type="text" formControlName="password" />
+  <button (click)="submut()">sss</button>
+</div>
+
+
+component :
+
+export class RegisterComponent implements OnInit {
+  formRegister: FormGroup = new FormGroup({});
+  constructor(private fbd: FormBuilder, private router: Router) { }
+
+  ngOnInit(): void {
+    this.formRegister = this.fbd.group({
+      name: ["", []],
+      email: ['', [Validators.required]],
+      password: ['', []],
+      active: [false, []]
+    });
+  }
+
+  submut() {
+    console.log(this.formRegister.value.email);
+    console.log(this.formRegister);
+    let arr: any[] = [];
+
+
+
+    const dataLocal = localStorage.getItem('acs');
+    if (dataLocal) {
+      arr = JSON.parse(dataLocal);
+    }
+
+    let obj = {
+      name: this.formRegister.value.name,
+
+    }
+
+    arr.push(obj);
+
+    localStorage.setItem('acs', JSON.stringify(arr));
+
+    this.router.navigateByUrl('/auth/login');
+
+  }
+
+
+
+}
+
+
+
+
+export class VerifyEmailComponent implements OnInit {
+
+  constructor(private activedRouter: ActivatedRoute) { }
+
+  ngOnInit(): void {
+    this.activedRouter.params.subscribe(paras => {
+      console.log(paras);
+    });
+  }
+  
+  
+  
+   // submit() {
+  //   console.log(this.formRegister.value.email);
+  //   console.log(this.formRegister);
+  //   let arr: any[] = [];
+
+
+
+  //   const dataLocal = localStorage.getItem('acs');
+  //   if (dataLocal) {
+  //     arr = JSON.parse(dataLocal);
+  //   }
+
+  //   let obj = {
+  //     name: this.formRegister.value.name,
+
+  //   }
+
+  //   arr.push(obj);
+
+  //   localStorage.setItem('acs', JSON.stringify(arr));
+
+  //   this.router.navigateByUrl('/auth/login');
+
+  //}
+
++ INTERPOLATION = {{}}
+
+
+
++routing
++.module
